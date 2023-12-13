@@ -1,27 +1,62 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <div id="app">
+    <img alt="Vue logo" src="./assets/logo.svg">
+    <span id="title">Welcome to use liteflow-blueprint</span>
+    <div class="rete" ref="rete"></div>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
+import { createEditor } from './rete';
 
 export default defineComponent({
   name: 'App',
-  components: {
-    HelloWorld
+  async mounted() {
+    await createEditor(this.$refs.rete as HTMLElement)
   }
 });
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+body{
+  background-color: #333333;
 }
+
+#app {
+  //font-family: Avenir, Helvetica, Arial, sans-serif;
+  //-webkit-font-smoothing: antialiased;
+  //-moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #a86634;
+  margin-top: 0;
+  width: 100%;
+}
+
+.rete {
+  position: relative;
+  height: 92vh;
+  font-size: 1rem;
+  margin: 0 0;
+  border-radius: 1em;
+  text-align: left;
+  border: 3px solid #5e6565;
+
+  background-color: #262626;
+  opacity: 1;
+  background-image:
+      linear-gradient(#0f0f0f 1.5px,transparent 0),
+      linear-gradient(90deg,#0f0f0f 1.5px,transparent 0),
+      linear-gradient(#333 1.5px,transparent 0),
+      linear-gradient(90deg,#333 1.5px,#262626 0);
+  background-size: 200px 200px,200px 200px,25px 25px,25px 25px;
+  background-position: -1.5px -1.5px,-1.5px -1.5px,-1.5px -1.5px,-1.5px -1.5px;
+}
+
+#title{
+  padding-left: 10px;
+  font-weight: bold;
+  font-size: 24px;
+}
+
 </style>
