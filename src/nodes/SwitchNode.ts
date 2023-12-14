@@ -15,11 +15,15 @@ export class SwitchNode extends Classic.Node implements DataflowNode {
         this.addOutput('case3', new Classic.Output(socket, '分支3'));
 
     }
-    data() {
-        const value = (this.controls['id'] as Classic.InputControl<'text'>)
-            .value;
+    data(inputs: { last?: string,flag?: string }) {
+        const { last,flag } = inputs
+
+        console.log("SWITCH 节点:" + last + "--" + flag)
         return {
-            next:value
+            case1:last + "--" + flag,
+            case2:last + "--" + flag,
+            case3:last + "--" + flag,
+
         };
     }
 }

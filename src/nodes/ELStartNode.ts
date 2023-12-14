@@ -1,7 +1,7 @@
 import { DataflowNode } from 'rete-engine';
-import { ClassicPreset as Classic } from 'rete';
+import {ClassicPreset, ClassicPreset as Classic} from 'rete';
 const socket = new Classic.Socket('socket');
-export class ElStartNode extends Classic.Node implements DataflowNode {
+export class ElStartNode extends ClassicPreset.Node implements DataflowNode {
 
 
     constructor(initial: string, change?: (value: string) => void) {
@@ -10,14 +10,14 @@ export class ElStartNode extends Classic.Node implements DataflowNode {
         this.addOutput('next', new Classic.Output(socket, '下级'));
         this.addControl(
             'id',
-            new Classic.InputControl('text', { initial, change })
+            new Classic.InputControl('text', { initial ,change})
         );
     }
     data() {
         const value = (this.controls['id'] as Classic.InputControl<'text'>)
             .value;
         return {
-            next:value
+            next: value
         };
     }
 }

@@ -13,11 +13,13 @@ export class ThenNode extends Classic.Node implements DataflowNode {
         this.addOutput('child', new Classic.Output(socket, '子集'));
 
     }
-    data() {
-        const value = (this.controls['id'] as Classic.InputControl<'text'>)
-            .value;
+    data(inputs: { last?: string }) {
+        const { last } = inputs
+        const value = last;
+        console.log("THEN节点" + value)
         return {
-            next:value
+            next:value,
+            child:value
         };
     }
 }

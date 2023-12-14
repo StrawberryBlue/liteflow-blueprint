@@ -74,10 +74,11 @@ export default defineComponent({
     outputs() {
       return sortByIndex(Object.entries(this.data.outputs))
     },
-    data(){
-
-
-      return 'next data';
+    data({ inputs: any}){
+      console.log("CustomNode:" + this.inputs())
+      return {
+        id: this.inputs()
+      };
     }
   },
   components: {
@@ -120,7 +121,6 @@ export default defineComponent({
     padding: 6px 0 0;
     text-align: center;
     height: 30px;
-    //background-color: black;
     background: radial-gradient(85% 90%, rgba(48, 180, 36, 0.62) 0%, transparent 80%);
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;

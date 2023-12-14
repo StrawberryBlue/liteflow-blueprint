@@ -168,7 +168,11 @@ export async function createEditor(container: HTMLElement) {
   const selector = AreaExtensions.selector();
   const accumulating = AreaExtensions.accumulateOnCtrl();
 
-  AreaExtensions.selectableNodes(area, selector, { accumulating });
+
+  //     console.log(node.id, 'produces', sum);
+  //
+  //     area.update(
+  //       'control',  AreaExtensions.selectableNodes(area, selector, { accumulating });
 
 
   //dataflow实时计算方法
@@ -179,10 +183,6 @@ export async function createEditor(container: HTMLElement) {
     //   .filter((node) => node instanceof AddNode)
     //   .forEach(async (node) => {
     //     const sum = await dataflow.fetch(node.id);
-    //     console.log(node.id, 'produces', sum);
-    //
-    //     area.update(
-    //       'control',
     //       (node.controls['result'] as Classic.InputControl<'number'>).id
     //     );
     //   });

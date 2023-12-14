@@ -1,24 +1,25 @@
 import { DataflowNode } from 'rete-engine';
-import {ClassicPreset, ClassicPreset as Classic} from 'rete';
-
+import { ClassicPreset as Classic } from 'rete';
 const socket = new Classic.Socket('socket');
-export class CompentNode extends ClassicPreset.Node implements DataflowNode {
+export class ElEndNode extends Classic.Node implements DataflowNode {
 
 
     constructor(initial: string, change?: (value: string) => void) {
-        super(initial);
+        super('EL END');
 
         this.addInput('last', new Classic.Input(socket, '上级'));
-        this.addOutput('next', new Classic.Output(socket, '下级'));
-
-
+        this.addControl(
+            'id',
+            new Classic.InputControl('text', { initial, change })
+        );
     }
     data(inputs: { last?: string }) {
         const { last } = inputs
         const value = last;
-        console.log("自定义节点:" + value)
+        console.log("EL END节点" + value)
         return {
-            next:value
+            id: this.id,
+            last: value
         };
     }
 }
