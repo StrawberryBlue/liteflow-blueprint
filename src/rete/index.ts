@@ -11,7 +11,7 @@ const factory = {
 }
 // eslint-disable-next-line no-restricted-globals, no-undef
 const query = typeof location !== 'undefined' && new URLSearchParams(location.search)
-const name = ((query && query.get('template')) || 'default') as keyof typeof factory
+const name = ((query && query.get('template')) || 'customization') as keyof typeof factory
 
 const createEditor = factory[name]
 

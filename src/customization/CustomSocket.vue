@@ -15,16 +15,17 @@ export default {
 .socket {
   display: inline-block;
   cursor: pointer;
-  border: 1px solid grey;
+  border: 1px solid #ffffff;
   width: $socket-size;
-  height: $socket-size * 2;
+  height: $socket-size;
   vertical-align: middle;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.28);
   z-index: 2;
   box-sizing: border-box;
+  border-radius: 30%;
 
   &:hover {
-    background: #ddd;
+    background: #4cd326;
   }
 }
 </style>

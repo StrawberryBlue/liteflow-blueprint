@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.svg">
+<!--    <img alt="Vue logo" src="./assets/logo.svg">-->
     <span id="title">Welcome to use liteflow-blueprint</span>
     <div class="rete" ref="rete"></div>
   </div>
@@ -13,6 +13,8 @@ import { createEditor } from './rete';
 export default defineComponent({
   name: 'App',
   async mounted() {
+    console.log(this.$refs)
+    // await createEditor(this.$refs.rete as HTMLElement)
     await createEditor(this.$refs.rete as HTMLElement)
   }
 });
@@ -54,7 +56,7 @@ body{
 }
 
 #title{
-  padding-left: 10px;
+  //padding-left: 10px;
   font-weight: bold;
   font-size: 24px;
 }

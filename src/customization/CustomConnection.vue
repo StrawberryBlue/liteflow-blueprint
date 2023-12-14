@@ -23,7 +23,7 @@ svg {
   path {
     fill: none;
     stroke-width: 5px;
-    stroke: black;
+    stroke: #4cd326;
     pointer-events: auto;
   }
 }

@@ -1,4 +1,4 @@
-import { ClassicPreset as Classic, GetSchemes, NodeEditor } from 'rete';
+import {ClassicPreset, ClassicPreset as Classic, GetSchemes, NodeEditor} from 'rete';
 
 import { Area2D, AreaExtensions, AreaPlugin } from 'rete-area-plugin';
 import {
@@ -25,11 +25,14 @@ import {
   Presets as ContextMenuPresets,
 } from 'rete-context-menu-plugin';
 
+import {ElStartNode} from "@/nodes/ELStartNode";
 
-type Node = NumberNode | AddNode;
+type Node = NumberNode | AddNode | ElStartNode | ClassicPreset.Node;
 type Conn =
   | Connection<NumberNode, AddNode>
   | Connection<AddNode, AddNode>
+  | Connection<ElStartNode, AddNode>
+  | Connection<ElStartNode, NumberNode>
   | Connection<AddNode, NumberNode>;
 type Schemes = GetSchemes<Node, Conn>;
 
@@ -96,60 +99,67 @@ type AreaExtra =
 
 const socket = new Classic.Socket('socket');
 
+//初始化节点编辑器
 export async function createEditor(container: HTMLElement) {
+  //创建编辑器
   const editor = new NodeEditor<Schemes>();
+  //创建区域扩展插件
   const area = new AreaPlugin<Schemes, AreaExtra>(container);
+  //创建connection插件
   const connection = new ConnectionPlugin<Schemes, AreaExtra>();
-
+  //创建vueRender
   const vueRender = new VuePlugin<Schemes, AreaExtra>();
-
+  //创建svelte插件
   const svelteRender = new SveltePlugin<Schemes, AreaExtra>();
-
+  //创建上下文菜单插件
   const contextMenu = new ContextMenuPlugin<Schemes>({
+    //设置默认菜单
     items: ContextMenuPresets.classic.setup([
       ['Number', () => new NumberNode(1, process)],
       ['Add', () => new AddNode()],
+      ['EL START', () => new ElStartNode('开始')],
     ]),
   });
 
+  //使用上面创建的插件
   editor.use(area);
-
   area.use(vueRender);
-
   area.use(svelteRender);
   area.use(connection);
   area.use(contextMenu);
 
   connection.addPreset(ConnectionPresets.classic.setup());
-
   vueRender.addPreset(VuePresets.classic.setup());
   vueRender.addPreset(VuePresets.contextMenu.setup());
-
   svelteRender.addPreset(SveltePresets.classic.setup());
   svelteRender.addPreset(SveltePresets.contextMenu.setup());
 
-  const dataflow = new DataflowEngine<Schemes>();
+  //创建dataflow插件
+  // const dataflow = new DataflowEngine<Schemes>();
 
-  editor.use(dataflow);
+  //使用dataflow插件
+  // editor.use(dataflow);
 
-  const a = new NumberNode(1, process);
-  const b = new NumberNode(1, process);
-  const add = new AddNode();
 
-  await editor.addNode(a);
-  await editor.addNode(b);
-  await editor.addNode(add);
+  // 在页面上添加默认的节点，演示使用
+  // const a = new NumberNode(1, process);
+  // const b = new NumberNode(1, process);
+  // const add = new AddNode();
+  //
+  // await editor.addNode(a);
+  // await editor.addNode(b);
+  // await editor.addNode(add);
+  //
+  // await editor.addConnection(new Connection(a, 'value', add, 'a'));
+  // await editor.addConnection(new Connection(b, 'value', add, 'b'));
 
-  await editor.addConnection(new Connection(a, 'value', add, 'a'));
-  await editor.addConnection(new Connection(b, 'value', add, 'b'));
 
-  const arrange = new AutoArrangePlugin<Schemes>();
-
-  arrange.addPreset(ArrangePresets.classic.setup());
-
-  area.use(arrange);
-
-  await arrange.layout();
+  //创建autoArrange插件 实现节点自动排列
+  // const arrange = new AutoArrangePlugin<Schemes>();
+  // arrange.addPreset(ArrangePresets.classic.setup());
+  // area.use(arrange);
+  //
+  // await arrange.layout();
 
   AreaExtensions.zoomAt(area, editor.getNodes());
 
@@ -160,22 +170,22 @@ export async function createEditor(container: HTMLElement) {
 
   AreaExtensions.selectableNodes(area, selector, { accumulating });
 
+
+  //dataflow实时计算方法
   async function process() {
-    dataflow.reset();
-
-    editor
-      .getNodes()
-      .filter((node) => node instanceof AddNode)
-      .forEach(async (node) => {
-        const sum = await dataflow.fetch(node.id);
-
-        console.log(node.id, 'produces', sum);
-
-        area.update(
-          'control',
-          (node.controls['result'] as Classic.InputControl<'number'>).id
-        );
-      });
+    // dataflow.reset();
+    // editor
+    //   .getNodes()
+    //   .filter((node) => node instanceof AddNode)
+    //   .forEach(async (node) => {
+    //     const sum = await dataflow.fetch(node.id);
+    //     console.log(node.id, 'produces', sum);
+    //
+    //     area.update(
+    //       'control',
+    //       (node.controls['result'] as Classic.InputControl<'number'>).id
+    //     );
+    //   });
   }
 
   editor.addPipe((context) => {

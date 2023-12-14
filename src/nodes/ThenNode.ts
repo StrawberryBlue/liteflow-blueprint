@@ -1,17 +1,17 @@
 import { DataflowNode } from 'rete-engine';
 import { ClassicPreset as Classic } from 'rete';
+
 const socket = new Classic.Socket('socket');
-export class ElStartNode extends Classic.Node implements DataflowNode {
+export class ThenNode extends Classic.Node implements DataflowNode {
 
 
     constructor(initial: string, change?: (value: string) => void) {
-        super('EL START');
+        super('THEN');
 
+        this.addInput('last', new Classic.Input(socket, '上级'));
         this.addOutput('next', new Classic.Output(socket, '下级'));
-        this.addControl(
-            'id',
-            new Classic.InputControl('text', { initial, change })
-        );
+        this.addOutput('child', new Classic.Output(socket, '子集'));
+
     }
     data() {
         const value = (this.controls['id'] as Classic.InputControl<'text'>)
