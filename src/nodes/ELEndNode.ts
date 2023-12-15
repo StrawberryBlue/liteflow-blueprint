@@ -6,8 +6,10 @@ export class ElEndNode extends Classic.Node implements DataflowNode {
 
     constructor(initial: string, change?: (value: string) => void) {
         super('EL END');
-
-        this.addInput('last', new Classic.Input(socket, '上级'));
+        const input = new Classic.Input(socket, '上级');
+        //设置可以多输入
+        input.multipleConnections = true;
+        this.addInput('last',input);
         this.addControl(
             'id',
             new Classic.InputControl('text', { initial, change })

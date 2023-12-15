@@ -73,12 +73,6 @@ export default defineComponent({
     },
     outputs() {
       return sortByIndex(Object.entries(this.data.outputs))
-    },
-    data({ inputs: any}){
-      console.log("CustomNode:" + this.inputs())
-      return {
-        id: this.inputs()
-      };
     }
   },
   components: {
@@ -121,7 +115,7 @@ export default defineComponent({
     padding: 6px 0 0;
     text-align: center;
     height: 30px;
-    background: radial-gradient(85% 90%, rgba(48, 180, 36, 0.62) 0%, transparent 80%);
+    background: radial-gradient(85% 90% at 50% 50%, rgba(48, 180, 36, 0.62) 0%, transparent 80%);
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
   }
@@ -134,7 +128,7 @@ export default defineComponent({
     min-height: 20px;
     text-align: left;
     display: inline-block;
-    width: $node-width*0.95/2;
+    width: calc($node-width * 0.95 / 2);
 
 
   }
@@ -146,7 +140,7 @@ export default defineComponent({
     min-height: 20px;
     text-align: right;
     display: inline-block;
-    width: $node-width*0.95/2;
+    width: calc($node-width * 0.95 / 2);
   }
   .output {
     //display: flex;
@@ -193,7 +187,7 @@ export default defineComponent({
     margin-top: 3px;
     margin-bottom: 3px;
     border-radius: 3px;
-    margin-left: #{$socket-size + $socket-margin/2};
+    margin-left: #{$socket-size + calc($socket-margin / 2)};
     width: calc($node-width - #{$socket-size + 4*$socket-margin});
     display: inline-block;
     text-align: center;
@@ -204,7 +198,7 @@ export default defineComponent({
     margin-top: 3px;
     margin-bottom: 3px;
     border-radius: 3px;
-    margin-left: #{$socket-size + $socket-margin/2};
+    margin-left: #{$socket-size + calc($socket-margin / 2)};
     width: calc($node-width - #{$socket-size + 4*$socket-margin});
     display: inline-block;
     text-align: center;

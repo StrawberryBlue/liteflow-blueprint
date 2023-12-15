@@ -7,8 +7,10 @@ export class CompentNode extends ClassicPreset.Node implements DataflowNode {
 
     constructor(initial: string, change?: (value: string) => void) {
         super(initial);
-
-        this.addInput('last', new Classic.Input(socket, '上级'));
+        const input = new Classic.Input(socket, '上级');
+        //设置可以多输入
+        input.multipleConnections = true;
+        this.addInput('last',input);
         this.addOutput('next', new Classic.Output(socket, '下级'));
 
 

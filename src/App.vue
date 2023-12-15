@@ -64,12 +64,13 @@ body{
 [rete-context-menu] {
   width: 180px !important;
 
+
   .block{
     background: #333333FF;
     border-bottom: 1px dashed #0f0f0f;
 
     &:hover {
-      background: #4cd326;
+      background: #5e6565;
     }
   }
 

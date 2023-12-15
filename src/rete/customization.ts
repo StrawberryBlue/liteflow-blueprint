@@ -7,16 +7,16 @@ import {
 
 import { VuePlugin, VueArea2D, Presets as VuePresets } from 'rete-vue-plugin';
 
-import CustomNode from '../customization/CustomNode.vue';
-import CustomConnection from '../customization/CustomConnection.vue';
-import CustomSocket from '../customization/CustomSocket.vue';
+import CustomNode from '@/customui/CustomNode.vue';
+import CustomConnection from '@/customui/CustomConnection.vue';
+import CustomSocket from '@/customui/CustomSocket.vue';
 import {
   ContextMenuExtra,
   ContextMenuPlugin,
   Presets as ContextMenuPresets,
 } from 'rete-context-menu-plugin';
 
-import { addCustomBackground } from '@/customization/custom-background';
+import { addCustomBackground } from '@/customui/custom-background';
 import {ElStartNode} from "@/nodes/ELStartNode";
 import {Presets as SveltePresets, SvelteArea2D, SveltePlugin} from "rete-svelte-plugin";
 import {DataflowEngine} from "rete-engine";
@@ -27,7 +27,8 @@ import {CompentNode} from "@/nodes/CompentNode";
 import {ElEndNode} from "@/nodes/ELEndNode";
 import {WhenNode} from "@/nodes/WhenNode";
 import {IfNode} from "@/nodes/IfNode";
-import CustomButton from "@/customization/CustomButton.vue";
+import CustomButton from "@/customui/CustomButton.vue";
+import CustomMenu from "@/customui/CustomMenu";
 
 
 
@@ -50,43 +51,8 @@ export async function createEditor(container: HTMLElement) {
   const vueRender = new VuePlugin<Schemes, AreaExtra>();
   //创建 svelteRender
   const svelteRender = new SveltePlugin<Schemes, AreaExtra>();
-  //创建上下文菜单插件
-  // @ts-ignore
-  const contextMenu = new ContextMenuPlugin<Schemes>({
-    //设置默认菜单
-    items: ContextMenuPresets.classic.setup(
-      [
-          ['默认组件',
-            [
-              ['EL START', () => new ElStartNode("EL开始")],
-              ['THEN', () => new ThenNode("THEN")],
-              ['SWITCH', () => new SwitchNode("SWITCH")],
-              ['WHEN', () => new WhenNode("WHEN")],
-              ['IF', () => new IfNode("IF")],
-              ['EL END', () => new ElEndNode("EL结束")]
-            ]
-          ],
-          ["自定义组件",
-            [
-              ['A', () => new CompentNode("自定义A")],
-              ['B', () => new CompentNode("自定义B")],
-              ['C', () => new CompentNode("自定义C")],
-              ['D', () => new CompentNode("自定义D")],
-            ]
-          ],
-        ["逻辑组件",
-          [
-            ['A', () => new CompentNode("自定义A")],
-            ['B', () => new CompentNode("自定义B")],
-            ['C', () => new CompentNode("自定义C")],
-            ['D', () => new CompentNode("自定义D")],
-          ]
-        ]
-
-    ]),
-  });
-
-
+  //创建自定义上下文菜单
+  const contextMenu = CustomMenu(editor,area);
   //创建autoArrange插件 实现节点自动排列
   const arrange = new AutoArrangePlugin<Schemes>();
   //创建dataflow插件
@@ -103,6 +69,7 @@ export async function createEditor(container: HTMLElement) {
   area.use(arrange);
 
   editor.use(dataflow);
+
 
 
 
@@ -153,6 +120,7 @@ export async function createEditor(container: HTMLElement) {
   setTimeout(() => {
     AreaExtensions.zoomAt(area, editor.getNodes());
   }, 300);
+
   //dataflow实时计算方法
   async function process() {
     dataflow.reset();
@@ -164,16 +132,13 @@ export async function createEditor(container: HTMLElement) {
   }
 
   editor.addPipe((context) => {
-    if (
-        context.type === 'connectioncreated' ||
-        context.type === 'connectionremoved'
-    ) {
+    if (context.type === 'connectioncreated' || context.type === 'connectionremoved') {
       process();
     }
     return context;
   });
 
-  process();
+  await process();
 
   return {
     destroy: () => area.destroy(),
