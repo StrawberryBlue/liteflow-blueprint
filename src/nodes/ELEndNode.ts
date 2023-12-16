@@ -18,7 +18,16 @@ export class ElEndNode extends Classic.Node implements DataflowNode {
     data(inputs: { last?: string }) {
         const { last } = inputs
         const value = last;
-        console.log("EL END节点" + value)
+        let elString = '';
+        if (last != undefined){
+            elString = last.toString().replace('$','') + '</chain>';
+        }
+
+
+        console.log("EL END节点" + elString)
+        if (elString != ''){
+            alert("编排完成: \n" + elString);
+        }
         return {
             id: this.id,
             last: value

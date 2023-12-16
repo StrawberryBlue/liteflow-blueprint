@@ -1,10 +1,17 @@
 import { DataflowNode } from 'rete-engine';
 import {ClassicPreset, ClassicPreset as Classic} from 'rete';
 
+
+
 const socket = new Classic.Socket('socket');
 export class CompentNode extends ClassicPreset.Node implements DataflowNode {
 
 
+    /**
+     * 所有自定义节点都使用该节点生成，节点名称为传入的initial
+     * @param initial
+     * @param change
+     */
     constructor(initial: string, change?: (value: string) => void) {
         super(initial);
         const input = new Classic.Input(socket, '上级');

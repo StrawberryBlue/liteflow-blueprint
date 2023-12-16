@@ -1,4 +1,4 @@
-import {NodeEditor, GetSchemes, ClassicPreset} from 'rete';
+import {NodeEditor, GetSchemes, ClassicPreset, ConnectionBase, NodeBase} from 'rete';
 
 import {Area2D, AreaExtensions, AreaPlugin} from 'rete-area-plugin';
 import {
@@ -12,37 +12,31 @@ import CustomConnection from '@/customui/CustomConnection.vue';
 import CustomSocket from '@/customui/CustomSocket.vue';
 import {
   ContextMenuExtra,
-  ContextMenuPlugin,
-  Presets as ContextMenuPresets,
+
 } from 'rete-context-menu-plugin';
 
 import { addCustomBackground } from '@/customui/custom-background';
-import {ElStartNode} from "@/nodes/ELStartNode";
 import {Presets as SveltePresets, SvelteArea2D, SveltePlugin} from "rete-svelte-plugin";
 import {DataflowEngine} from "rete-engine";
 import {AutoArrangePlugin,Presets as ArrangePresets} from "rete-auto-arrange-plugin";
-import {ThenNode} from "@/nodes/ThenNode";
-import {SwitchNode} from "@/nodes/SwitchNode";
-import {CompentNode} from "@/nodes/CompentNode";
-import {ElEndNode} from "@/nodes/ELEndNode";
-import {WhenNode} from "@/nodes/WhenNode";
-import {IfNode} from "@/nodes/IfNode";
-import CustomButton from "@/customui/CustomButton.vue";
 import CustomMenu from "@/customui/CustomMenu";
 
 
 
-type Schemes = GetSchemes<any, any>
 
-type AreaExtra =
+export type Schemes = GetSchemes<any, any>
+
+export type AreaExtra =
     | Area2D<Schemes>
     | VueArea2D<Schemes>
     | SvelteArea2D<Schemes>
     | ContextMenuExtra;
+//创建编辑器
+export var editor = new NodeEditor<Schemes>();
+
+
 
 export async function createEditor(container: HTMLElement) {
-  //创建编辑器
-  const editor = new NodeEditor<Schemes>();
   //创建 areaPlug
   const area = new AreaPlugin<Schemes, AreaExtra>(container);
   //创建 connectionPlugin
@@ -52,7 +46,7 @@ export async function createEditor(container: HTMLElement) {
   //创建 svelteRender
   const svelteRender = new SveltePlugin<Schemes, AreaExtra>();
   //创建自定义上下文菜单
-  const contextMenu = CustomMenu(editor,area);
+  const contextMenu = CustomMenu(area);
   //创建autoArrange插件 实现节点自动排列
   const arrange = new AutoArrangePlugin<Schemes>();
   //创建dataflow插件
@@ -133,12 +127,12 @@ export async function createEditor(container: HTMLElement) {
 
   editor.addPipe((context) => {
     if (context.type === 'connectioncreated' || context.type === 'connectionremoved') {
-      process();
+      process().catch(e=>console.log(e));
     }
     return context;
   });
 
-  await process();
+  await process().catch(e=>console.log(e));
 
   return {
     destroy: () => area.destroy(),

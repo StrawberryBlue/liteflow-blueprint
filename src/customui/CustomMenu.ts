@@ -6,22 +6,16 @@ import {WhenNode} from "@/nodes/WhenNode";
 import {IfNode} from "@/nodes/IfNode";
 import {ElEndNode} from "@/nodes/ELEndNode";
 import {CompentNode} from "@/nodes/CompentNode";
-import {ClassicPreset, GetSchemes, NodeEditor} from "rete";
-import {Area2D, AreaPlugin} from "rete-area-plugin";
-import {VueArea2D} from "rete-vue-plugin";
-import {SvelteArea2D} from "rete-svelte-plugin";
-
-
-type Schemes = GetSchemes<any, any>
-type AreaExtra =
-    | Area2D<Schemes>
-    | VueArea2D<Schemes>
-    | SvelteArea2D<Schemes>
-    | ContextMenuExtra;
+import {ClassicPreset} from "rete";
+import {AreaPlugin} from "rete-area-plugin";
+import {AreaExtra, editor, Schemes} from "@/rete/customization";
 
 
 
-export default (editor: NodeEditor<Schemes>,area: AreaPlugin<Schemes, AreaExtra>) => {
+
+
+
+export default (area: AreaPlugin<Schemes, AreaExtra>) => {
 
 
 
@@ -112,14 +106,14 @@ export default (editor: NodeEditor<Schemes>,area: AreaPlugin<Schemes, AreaExtra>
                     {
                         label: '删除', key: '1', handler: () => {
                             const node = context as ClassicPreset.Node;
-                            console.log(node);
+                            const nodeId = node.id;
                             const connections = editor.getConnections();
                             connections.forEach((c)=>{
-                                if (c.source == node.id || c.target == node.id){
+                                if (c.source == nodeId || c.target == nodeId){
                                     editor.removeConnection(c.id);
                                 }
                             })
-                            editor.removeNode(node.id);
+                            editor.removeNode(nodeId);
                         }
                     },
                 ]

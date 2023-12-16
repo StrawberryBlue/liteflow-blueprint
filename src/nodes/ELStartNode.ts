@@ -4,8 +4,11 @@ const socket = new Classic.Socket('socket');
 export class ElStartNode extends ClassicPreset.Node implements DataflowNode {
 
 
+
+
     constructor(initial: string, change?: (value: string) => void) {
         super('EL START');
+
 
         this.addOutput('next', new Classic.Output(socket, '下级'));
         this.addControl(
@@ -16,8 +19,9 @@ export class ElStartNode extends ClassicPreset.Node implements DataflowNode {
     data() {
         const value = (this.controls['id'] as Classic.InputControl<'text'>)
             .value;
+        const message = '<chain name="' + value + '"> \n $';
         return {
-            next: value
+            next: message,
         };
     }
 }

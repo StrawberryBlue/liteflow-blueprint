@@ -18,6 +18,7 @@
     "rete-context-menu-plugin": "^2.0.0",
     "rete-engine": "^2.0.0",
     "rete-render-utils": "^2.0.1",
+    "rete-structures": "^2.0.0",
     "rete-svelte-plugin": "^2.0.0",
     "rete-vue-plugin": "^2.0.4",
     "sass": "^1.69.5",
