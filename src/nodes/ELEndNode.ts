@@ -20,7 +20,7 @@ export class ElEndNode extends Classic.Node implements DataflowNode {
         const value = last;
         let elString = '';
         if (last != undefined){
-            elString = last.toString().replace('$','') + '</chain>';
+            elString = last.toString().replace(',$','') + '; \n </chain>';
         }
 
 

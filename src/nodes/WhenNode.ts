@@ -8,9 +8,9 @@ export class WhenNode extends Classic.Node implements DataflowNode {
     constructor(initial: string, change?: (value: string) => void) {
         super('WHEN');
 
-        this.addInput('flag1', new Classic.Input(socket, '条件1'));
-        this.addInput('flag2', new Classic.Input(socket, '条件2'));
-        this.addInput('flag3', new Classic.Input(socket, '条件3'));
+        this.addInput('last', new Classic.Input(socket, '上级'));
+        this.addInput('flag2', new Classic.Input(socket, '分支1'));
+        this.addInput('flag3', new Classic.Input(socket, '分支2'));
         this.addOutput('next', new Classic.Output(socket, '下级'));
 
     }
