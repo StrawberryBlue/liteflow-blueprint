@@ -20,6 +20,7 @@ import {Presets as SveltePresets, SvelteArea2D, SveltePlugin} from "rete-svelte-
 import {DataflowEngine} from "rete-engine";
 import {AutoArrangePlugin,Presets as ArrangePresets} from "rete-auto-arrange-plugin";
 import CustomMenu from "@/customui/CustomMenu";
+import {nodeUtil} from "@/utils/UtilsExport";
 
 
 
@@ -34,7 +35,8 @@ export type AreaExtra =
 //创建编辑器
 export var editor = new NodeEditor<Schemes>();
 
-
+//创建dataflow插件
+export var dataflow = new DataflowEngine<Schemes>();
 
 export async function createEditor(container: HTMLElement) {
   //创建 areaPlug
@@ -49,8 +51,7 @@ export async function createEditor(container: HTMLElement) {
   const contextMenu = CustomMenu(area);
   //创建autoArrange插件 实现节点自动排列
   const arrange = new AutoArrangePlugin<Schemes>();
-  //创建dataflow插件
-  const dataflow = new DataflowEngine<Schemes>();
+
 
   //编辑器添加插件
   editor.use(area);
@@ -118,11 +119,24 @@ export async function createEditor(container: HTMLElement) {
   //dataflow实时计算方法
   async function process() {
     dataflow.reset();
-    for (const node of editor
-        .getNodes()) {
-          const next = await dataflow.fetch(node.id);
-          console.log(node.label + "["+ node.id + "]", 'produces', next);
-        }
+    for (const node of editor.getNodes()) {
+        const next = await dataflow.fetch(node.id);
+        console.info(node.label + "["+ node.id + "]", 'produces', next);
+    }
+
+    /*for (const node of editor.getNodes()){
+      if (node.label === 'EL END'){
+        const allIn = nodeUtil.getAllInputConnections(node.id);
+        allIn.forEach(conn => {
+          const sourceNode = editor.getNode(conn.source);
+          const targetNode = editor.getNode(conn.target);
+          editor.removeConnection(conn.id)
+          editor.addConnection(new CustomConnection(sourceNode,'next',targetNode,'last'))
+        })
+
+      }
+    }*/
+
   }
 
   editor.addPipe((context) => {

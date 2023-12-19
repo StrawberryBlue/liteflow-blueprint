@@ -37,7 +37,6 @@
       <Ref class="control" v-for="[key, control] in controls()" :key="'control' + key + seed" :emit="emit"
            :data="{ type: 'control', payload: control }" :data-testid="'control-' + key" />
     </div>
-
   </div>
 </template>
 

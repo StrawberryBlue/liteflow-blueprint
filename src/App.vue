@@ -26,9 +26,9 @@ body{
 }
 
 #app {
-  //font-family: Avenir, Helvetica, Arial, sans-serif;
-  //-webkit-font-smoothing: antialiased;
-  //-moz-osx-font-smoothing: grayscale;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #a86634;
   margin-top: 0;
@@ -38,6 +38,7 @@ body{
 .rete {
   position: relative;
   height: 92vh;
+  //width: 80%;
   font-size: 1rem;
   margin: 0 0;
   border-radius: 1em;
@@ -63,8 +64,6 @@ body{
 
 [rete-context-menu] {
   width: 180px !important;
-
-
   .block{
     background: #333333FF;
     border-bottom: 1px dashed #0f0f0f;

@@ -153,6 +153,7 @@ export default class NodeUtils{
      * @param outName 引脚名称
      */
     getNextNode(node:Classic.Node,outName:string):BaseNode[]{
+        this.updateEditor(editor);
         let nextNode:BaseNode[] = [];
         this.updateEditor(editor);
         const outConns = this.getAllOutputConnections(node.id);
@@ -172,6 +173,7 @@ export default class NodeUtils{
      * 获取指定输出节点的叶子节点
      */
     getLeaves(node:Classic.Node,outName:string):BaseNode[]{
+        this.updateEditor(editor);
         let leavesNodes:BaseNode[] = [];
         this.getNextNode(node,outName).forEach(nextNode => {
             this.recursionLeaves(nextNode,'next',leavesNodes);
@@ -186,7 +188,8 @@ export default class NodeUtils{
      * @param leavesNodes
      */
     recursionLeaves(node:Classic.Node,outName:string,leavesNodes:Classic.Node[]){
-        if (this.isLeaves(node)){
+        const nextNodes = this.getNextNode(node,'next');
+        if (nextNodes.length===0){
             leavesNodes.push(node);
         }else{
             //获取node的下级节点
@@ -195,6 +198,16 @@ export default class NodeUtils{
                 this.recursionLeaves(nn,outName,leavesNodes);
             })
         }
+    }
+
+    haveEnd(editor:NodeEditor<Schemes>){
+        let resp = false;
+        editor.getNodes().forEach(n => {
+            if (n.label === 'EL END'){
+                resp = true;
+            }
+        })
+        return resp;
     }
 
 }

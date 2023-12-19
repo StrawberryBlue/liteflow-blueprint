@@ -36,7 +36,7 @@ export class ThenNode extends BaseNode implements DataflowNode {
         if (nodeUtil.isRoot(this)){
             last = '$';
         }
-        //该节点为根节点或者子节点时处理逻辑相同
+        //当THEN节点有子集时，先获取子集信息
         if (nodeUtil.getNextNode(this,'child').length>0){
             let lnStr = '';
             //获取child 的所有叶子
@@ -58,6 +58,8 @@ export class ThenNode extends BaseNode implements DataflowNode {
         if (!(nodeUtil.isLeaves(this))){
             this.msgBody = this.msgBody + ',$';
         }
+
+
 
         return {
             next:this.msgBody,
