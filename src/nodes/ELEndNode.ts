@@ -1,6 +1,7 @@
 import {DataflowEngine, DataflowNode} from 'rete-engine';
 import { ClassicPreset as Classic } from 'rete';
 import {dataflow, editor} from "@/rete/customization";
+import {result} from "@/nodes/Result";
 const socket = new Classic.Socket('socket');
 export class ElEndNode extends Classic.Node implements DataflowNode {
     msgBody:string = '';
@@ -19,7 +20,7 @@ export class ElEndNode extends Classic.Node implements DataflowNode {
         const {last} = inputs
         const value = last;
         let elString = '';
-        // dataflow.reset();
+        dataflow.reset();
 
 
         if (last != undefined) {
@@ -28,7 +29,7 @@ export class ElEndNode extends Classic.Node implements DataflowNode {
 
         elString = elString.replaceAll('$', "");
         if (elString != '') {
-            alert("编排完成: \n" + elString);
+            result.setData(elString);
         }
 
         this.msgBody = elString;

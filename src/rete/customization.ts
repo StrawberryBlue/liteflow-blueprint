@@ -120,28 +120,25 @@ export async function createEditor(container: HTMLElement) {
   async function process() {
     dataflow.reset();
     for (const node of editor.getNodes()) {
+      if (node.label == 'EL END') {
+        const next = await dataflow.fetchInputs(node.id);
+        const END = await dataflow.fetch(node.id).catch(e=>{console.log('this is END')});
+        console.info(node.label + "[" + node.id + "]", 'produces', next, END);
+      } else {
+        const input = await dataflow.fetchInputs(node.id);
         const next = await dataflow.fetch(node.id);
-        console.info(node.label + "["+ node.id + "]", 'produces', next);
-    }
-
-    /*for (const node of editor.getNodes()){
-      if (node.label === 'EL END'){
-        const allIn = nodeUtil.getAllInputConnections(node.id);
-        allIn.forEach(conn => {
-          const sourceNode = editor.getNode(conn.source);
-          const targetNode = editor.getNode(conn.target);
-          editor.removeConnection(conn.id)
-          editor.addConnection(new CustomConnection(sourceNode,'next',targetNode,'last'))
-        })
-
+        console.info(node.label + "[" + node.id + "]", 'input:', input,' \n output:',next);
       }
-    }*/
 
+    }
   }
 
-  editor.addPipe((context) => {
-    if (context.type === 'connectioncreated' || context.type === 'connectionremoved') {
-      process().catch(e=>console.log(e));
+  editor.addPipe(async (context) => {
+    if (context.type === 'connectioncreated'
+        || context.type === 'connectionremoved') {
+      await process().catch(e => console.log(e));
+      //当新连接产生时重新计算两次，避免缓存数据导致输入错误
+      await process().catch(e => console.log(e));
     }
     return context;
   });

@@ -21,7 +21,6 @@ export class CompentNode extends ClassicPreset.Node implements DataflowNode {
         this.addInput('last',input);
         this.addOutput('next', new Classic.Output(socket, '下级'));
 
-
     }
     data(inputs: { last?: string }) {
         let { last } = inputs

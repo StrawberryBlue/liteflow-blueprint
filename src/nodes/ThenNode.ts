@@ -40,14 +40,13 @@ export class ThenNode extends BaseNode implements DataflowNode {
         if (nodeUtil.getNextNode(this,'child').length>0){
             let lnStr = '';
             //获取child 的所有叶子
-            const leaves = nodeUtil.getLeaves(this,'child');
+            let leaves = nodeUtil.getLeaves(this,'child');
             for (let i = 0; i < leaves.length; i++) {
                 lnStr = lnStr + leaves[i].msgBody;
                 if (i != leaves.length - 1){
                     lnStr = lnStr + ',';
                 }
             }
-            console.log("last " + last + "   " + lnStr)
             // @ts-ignore
             this.msgBody = last.toString().replace('$','THEN(' + lnStr +')');
         }else {

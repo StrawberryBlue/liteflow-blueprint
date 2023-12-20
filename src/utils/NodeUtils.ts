@@ -78,7 +78,7 @@ export default class NodeUtils{
     /**
      * 获取所有叶子节点
      */
-    getAllLeaves():any{
+    getAllLeaves():Classic.Node[]{
         this.updateEditor(editor);
         const nodes = this.nodeEditor.getNodes();
         return nodes.filter(node => {
