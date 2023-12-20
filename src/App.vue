@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="title">
-      <span id="title">Welcome to use liteflow-blueprint</span>
+      <span id="title" @click="choreography()">Welcome to use liteflow-blueprint</span>
     </div>
 <!--    <button id="btn" @click="choreography()">编排</button>-->
     <div class="rete" ref="rete"></div>

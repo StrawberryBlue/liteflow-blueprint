@@ -20,9 +20,6 @@ import {Presets as SveltePresets, SvelteArea2D, SveltePlugin} from "rete-svelte-
 import {DataflowEngine} from "rete-engine";
 import {AutoArrangePlugin,Presets as ArrangePresets} from "rete-auto-arrange-plugin";
 import CustomMenu from "@/customui/CustomMenu";
-import {nodeUtil} from "@/utils/UtilsExport";
-
-
 
 
 export type Schemes = GetSchemes<any, any>
@@ -86,12 +83,7 @@ export async function createEditor(container: HTMLElement) {
         },
         connection() {
           return CustomConnection;
-        },
-        // control(context){
-        //   if (context.payload.isButton) {
-        //     return CustomButton;
-        //   }
-        // }
+        }
       },
     })
   );
@@ -136,9 +128,17 @@ export async function createEditor(container: HTMLElement) {
   editor.addPipe(async (context) => {
     if (context.type === 'connectioncreated'
         || context.type === 'connectionremoved') {
-      await process().catch(e => console.log(e));
-      //当新连接产生时重新计算两次，避免缓存数据导致输入错误
-      await process().catch(e => console.log(e));
+
+      //多层嵌套时进行几次计算
+      let count = 1;
+      editor.getNodes().forEach(node => {
+        if (node.label == 'THEN' || node.label == 'SWITCH') {
+          count++;
+        }
+      });
+      for (let i = 0; i < count; i++) {
+        await process().catch(e => console.log(e));
+      }
     }
     return context;
   });

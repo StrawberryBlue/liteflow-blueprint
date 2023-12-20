@@ -30,6 +30,7 @@ export class ElEndNode extends Classic.Node implements DataflowNode {
         elString = elString.replaceAll('$', "");
         if (elString != '') {
             result.setData(elString);
+            console.log('编排结果: \n' + elString);
         }
 
         this.msgBody = elString;
